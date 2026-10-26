@@ -1,0 +1,486 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Centro Médico | Sistema de Información</title>
+<style>
+:root {
+  --green: #147d4a;
+  --green-dark: #105c38;
+  --green-light: #e9f6ee;
+  --bg: #f4f7f5;
+  --text: #20332a;
+  --muted: #52665b;
+  --border: #d5e2d9;
+  --white: #fff;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+button, input, select, textarea { font: inherit; }
+button, a, input, select, textarea { min-height: 42px; }
+button:focus-visible, a:focus-visible,
+input:focus-visible, select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #e5a000;
+  outline-offset: 3px;
+}
+.layout { min-height: 100vh; display: flex; }
+.sidebar {
+  width: 255px;
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid var(--border);
+  padding: 24px 16px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 24px;
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  background: var(--green);
+  color: white;
+  border-radius: 12px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+.brand strong { display: block; font-size: 17px; }
+.brand small { color: var(--muted); }
+.nav-title {
+  margin: 22px 10px 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+nav { display: grid; gap: 5px; }
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 8px;
+  text-decoration: none;
+  text-align: left;
+  color: var(--text);
+  background: transparent;
+  cursor: pointer;
+}
+.nav-link:hover { background: var(--green-light); }
+.nav-link.active {
+  background: var(--green);
+  color: white;
+  font-weight: bold;
+}
+.main { min-width: 0; flex: 1; }
+.topbar {
+  min-height: 76px;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 30px;
+  gap: 16px;
+}
+.topbar p { margin: 3px 0 0; color: var(--muted); font-size: 14px; }
+.status {
+  padding: 7px 12px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: bold;
+}
+.content { padding: 30px; max-width: 1250px; margin: auto; }
+h1 { font-size: clamp(25px, 3vw, 34px); margin: 0 0 8px; }
+h2 { font-size: 19px; margin-top: 0; }
+.lead { color: var(--muted); margin-top: 0; }
+.welcome {
+  padding: 28px;
+  background: linear-gradient(120deg, #e5f5e9, #fff);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  margin-bottom: 24px;
+}
+.welcome p { max-width: 680px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+.card {
+  background: white;
+  padding: 22px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  min-width: 0;
+}
+.card h2 { margin: 12px 0 6px; }
+.card p { color: var(--muted); font-size: 14px; }
+.card-icon {
+  width: 45px;
+  height: 45px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: var(--green-light);
+  font-size: 23px;
+}
+.btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--green);
+  border-radius: 8px;
+  background: var(--green);
+  color: white;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: bold;
+}
+.btn:hover { background: var(--green-dark); }
+.btn.secondary { color: var(--green-dark); background: white; }
+.btn.secondary:hover { background: var(--green-light); }
+.card .btn { width: 100%; margin-top: 10px; }
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 26px;
+  margin-top: 24px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.field { display: grid; gap: 7px; }
+.field label { font-size: 14px; font-weight: bold; }
+.field input, .field select, .field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  color: var(--text);
+  border: 1px solid #9caf9f;
+  border-radius: 7px;
+  background: white;
+}
+.field textarea { min-height: 90px; resize: vertical; }
+.hint { color: var(--muted); font-size: 13px; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
+.notice {
+  padding: 13px 16px;
+  border-left: 4px solid var(--green);
+  background: var(--green-light);
+  border-radius: 5px;
+  margin: 18px 0;
+}
+.notice.error { border-color: #b42318; background: #fff0ee; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { text-align: left; padding: 13px; border-bottom: 1px solid var(--border); }
+th { background: var(--green-light); }
+.footer { padding: 24px 30px; color: var(--muted); font-size: 13px; }
+.mobile-menu { display: none; }
+[hidden] { display: none !important; }
+@media (max-width: 950px) {
+  .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sidebar { width: 220px; }
+  .content { padding: 22px; }
+}
+@media (max-width: 650px) {
+  .layout { display: block; }
+  .sidebar { width: 100%; padding: 14px; border-right: 0; }
+  .brand { padding-bottom: 12px; }
+  .nav-title { margin-top: 12px; }
+  nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav-link { font-size: 13px; padding: 8px; }
+  .topbar { padding: 14px 18px; }
+  .content { padding: 18px; }
+  .grid, .form-grid { grid-template-columns: 1fr; }
+  .welcome, .panel, .card { padding: 18px; }
+  .status { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar" aria-label="Navegación principal">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">+</div>
+      <div><strong>Centro Médico</strong><small>Sistema de información</small></div>
+    </div>
+    <p class="nav-title">Menú principal</p>
+    <nav id="navigation">
+      <a class="nav-link active" href="#inicio" data-page="inicio" aria-current="page">⌂ Inicio</a>
+      <a class="nav-link" href="#citas" data-page="citas">▦ Registrar citas médicas</a>
+      <a class="nav-link" href="#cancelar" data-page="cancelar">× Cancelar cita médica</a>
+      <a class="nav-link" href="#pacientes" data-page="pacientes">♙ Registrar paciente</a>
+      <a class="nav-link" href="#consultorios" data-page="consultorios">⌂ Registrar consultorio</a>
+      <a class="nav-link" href="#empleados" data-page="empleados">♧ Registrar empleado</a>
+      <a class="nav-link" href="#medicamentos" data-page="medicamentos">✚ Registrar medicamento</a>
+      <a class="nav-link" href="#tratamientos" data-page="tratamientos">☷ Registrar tratamiento</a>
+      <a class="nav-link" href="#medicos" data-page="medicos">⚕ Registrar médico</a>
+    </nav>
+    <div class="notice">
+      <strong>Prototipo académico</strong>
+      <p class="hint">Usa datos ficticios. No registra información médica real.</p>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><strong id="breadcrumb">Inicio / Página principal</strong><p>Gestión administrativa del centro médico</p></div>
+      <span class="status">● Entorno de demostración</span>
+    </header>
+    <div class="content">
+      <section id="inicio" class="page">
+        <div class="welcome">
+          <p><strong>BIENVENIDO/A</strong></p>
+          <h1>Página principal del consultorio</h1>
+          <p>Administra citas y consulta los módulos del Centro Médico desde un solo lugar. Selecciona una opción para comenzar.</p>
+          <button class="btn" data-go="citas">Registrar una cita →</button>
+        </div>
+        <div class="grid" id="homeCards"></div>
+      </section>
+
+      <section id="citas" class="page" hidden>
+        <h1>Registrar citas médicas</h1>
+        <p class="lead">Busca al paciente y verifica la disponibilidad antes de registrar la cita.</p>
+        <form class="panel demo-form">
+          <div class="form-grid">
+            <div class="field"><label for="c-paciente">Identificación del paciente *</label><input id="c-paciente" required inputmode="numeric" placeholder="Ej. 100000001"></div>
+            <div class="field"><label for="c-nombre">Paciente encontrado</label><input id="c-nombre" placeholder="Nombre del paciente"></div>
+            <div class="field"><label for="c-fecha">Fecha de la cita *</label><input id="c-fecha" type="date" required></div>
+            <div class="field"><label for="c-hora">Hora *</label><input id="c-hora" type="time" required></div>
+            <div class="field"><label for="c-medico">Médico *</label><select id="c-medico" required><option value="">Seleccionar médico</option><option>Dra. Laura Gómez</option><option>Dr. Carlos Ruiz</option></select></div>
+            <div class="field"><label for="c-consultorio">Consultorio *</label><select id="c-consultorio" required><option value="">Seleccionar consultorio</option><option>101 - Primer piso</option><option>202 - Segundo piso</option></select></div>
+            <div class="field"><label for="c-motivo">Motivo de consulta *</label><input id="c-motivo" required placeholder="Ej. Control general"></div>
+            <div class="field"><label for="c-observaciones">Observaciones</label><textarea id="c-observaciones" placeholder="Información adicional (opcional)"></textarea></div>
+          </div>
+          <div class="actions"><button class="btn" type="submit">Registrar cita</button><button class="btn secondary" type="reset">Limpiar formulario</button></div>
+        </form>
+      </section>
+
+      <section id="cancelar" class="page" hidden>
+        <h1>Cancelar cita médica</h1>
+        <p class="lead">Identifica la cita y confirma la cancelación antes de continuar.</p>
+        <form class="panel demo-form">
+          <div class="form-grid">
+            <div class="field"><label for="x-codigo">Código de la cita *</label><input id="x-codigo" required placeholder="Ej. CIT-001"></div>
+            <div class="field"><label for="x-paciente">Identificación del paciente *</label><input id="x-paciente" required placeholder="Identificación ficticia"></div>
+            <div class="field"><label for="x-motivo">Motivo de cancelación *</label><select id="x-motivo" required><option value="">Seleccionar motivo</option><option>Solicitud del paciente</option><option>Reprogramación</option><option>Otro motivo</option></select></div>
+          </div>
+          <div class="notice">En un sistema real, se mostraría el resumen de la cita antes de confirmar.</div>
+          <div class="actions"><button class="btn" type="submit">Solicitar cancelación</button><button class="btn secondary" type="reset">Limpiar</button></div>
+        </form>
+      </section>
+
+      <section id="pacientes" class="page" hidden>
+        <h1>Registrar paciente</h1>
+        <p class="lead">Registra los datos básicos de identificación y contacto.</p>
+        <form class="panel demo-form">
+          <div class="form-grid">
+            <div class="field"><label for="p-doc">Número de identificación *</label><input id="p-doc" required placeholder="Documento ficticio"></div>
+            <div class="field"><label for="p-nombre">Nombres y apellidos *</label><input id="p-nombre" required autocomplete="name" placeholder="Nombre completo"></div>
+            <div class="field"><label for="p-fecha">Fecha de nacimiento</label><input id="p-fecha" type="date"></div>
+            <div class="field"><label for="p-telefono">Teléfono de contacto</label><input id="p-telefono" type="tel" autocomplete="tel" placeholder="Número ficticio"></div>
+            <div class="field"><label for="p-correo">Correo electrónico</label><input id="p-correo" type="email" autocomplete="email" placeholder="persona@ejemplo.com"></div>
+            <div class="field"><label for="p-direccion">Dirección</label><input id="p-direccion" placeholder="Dirección ficticia"></div>
+          </div>
+          <div class="actions"><button class="btn" type="submit">Registrar paciente</button><button class="btn secondary" type="reset">Limpiar formulario</button></div>
+        </form>
+      </section>
+
+      <section id="consultorios" class="page" hidden>
+        <h1>Registrar consultorio</h1>
+        <p class="lead">Identifica el espacio físico y sus condiciones de disponibilidad.</p>
+        <form class="panel demo-form">
+          <div class="form-grid">
+            <div class="field"><label for="co-codigo">Código del consultorio *</label><input id="co-codigo" required placeholder="Ej. CON-101"></div>
+            <div class="field"><label for="co-nombre">Nombre o número *</label><input id="co-nombre" required placeholder="Ej. Consultorio 101"></div>
+            <div class="field"><label for="co-ubicacion">Ubicación *</label><input id="co-ubicacion" required placeholder="Ej. Primer piso"></div>
+            <div class="field"><label for="co-estado">Estado *</label><select id="co-estado" required><option value="">Seleccionar estado</option><option>Disponible</option><option>En mantenimiento</option><option>No disponible</option></select></div>
+            <div class="field"><label for="co-desc">Descripción</label><textarea id="co-desc" placeholder="Características del espacio"></textarea></div>
+          </div>
+          <div class="actions"><button class="btn" type="submit">Registrar consultorio</button><button class="btn secondary" type="reset">Limpiar formulario</button></div>
+        </form>
+      </section>
+
+      <section id="empleados" class="page" hidden>
+        <h1>Registrar empleado</h1>
+        <p class="lead">Propuesta de interfaz para registrar información básica del personal.</p>
+        <div class="notice">Nota académica: esta pantalla se conserva porque pertenece a los prototipos de la actividad. El modelo actual de ocho tablas no incluye empleado; esta demostración no almacena registros.</div>
+        <form class="panel demo-form">
+          <div class="form-grid">
+            <div class="field"><label for="e-doc">Identificación *</label><input id="e-doc" required placeholder="Documento ficticio"></div>
+            <div class="field"><label for="e-nombre">Nombre completo *</label><input id="e-nombre" required placeholder="Nombre ficticio"></div>
+            <div class="field"><label for="e-cargo">Cargo *</label><select id="e-cargo" required><option value="">Seleccionar cargo</option><option>Recepción</option><option>Administración</option><option>Apoyo asistencial</option></select></div>
+            <div class="field"><label for="e-correo">Correo de trabajo</label><input id="e-correo" type="email" placeholder="persona@ejemplo.com"></div>
+          </div>
+          <div class="actions"><button class="btn" type="submit">Registrar empleado (demo)</button><button class="btn secondary" type="reset">Limpiar formulario</button></div>
+        </form>
+      </section>
+
+      <section id="medicamentos" class="page" hidden>
+        <h1>Registrar medicamento</h1>
+        <p class="lead">Interfaz de propuesta para describir medicamentos de forma clara.</p>
+        <form class="panel demo-form">
+          <div class="form-grid">
+            <div class="field"><label for="m-nombre">Nombre del medicamento *</label><input id="m-nombre" required placeholder="Nombre genérico"></div>
+            <div class="field"><label for="m-principio">Principio activo</label><input id="m-principio" placeholder="Principio activo"></div>
+            <div class="field"><label for="m-presentacion">Presentación *</label><select id="m-presentacion" required><option value="">Seleccionar presentación</option><option>Tableta</option><option>Cápsula</option><option>Solución</option><option>Crema</option><option>Otra</option></select></div>
+            <div class="field"><label for="m-concentracion">Concentración</label><input id="m-concentracion" placeholder="Según el producto"></div>
+            <div class="field"><label for="m-descripcion">Descripción</label><textarea id="m-descripcion" placeholder="Información descriptiva"></textarea></div>
+          </div>
+          <div class="notice">El registro de medicamentos es administrativo. La prescripción corresponde a profesionales autorizados.</div>
+          <div class="actions"><button class="btn" type="submit">Registrar medicamento (demo)</button><button class="btn secondary" type="reset">Limpiar formulario</button></div>
+        </form>
+      </section>
+
+      <section id="tratamientos" class="page" hidden>
+        <h1>Registrar tratamiento</h1>
+        <p class="lead">Propuesta de formulario para documentar un tratamiento indicado por un profesional autorizado.</p>
+        <form class="panel demo-form">
+          <div class="form-grid">
+            <div class="field"><label for="t-codigo">Código del tratamiento *</label><input id="t-codigo" required placeholder="Ej. TRA-001"></div>
+            <div class="field"><label for="t-nombre">Nombre del tratamiento *</label><input id="t-nombre" required placeholder="Nombre descriptivo"></div>
+            <div class="field"><label for="t-paciente">Paciente (identificación ficticia) *</label><input id="t-paciente" required placeholder="Identificación de ejemplo"></div>
+            <div class="field"><label for="t-medico">Profesional responsable *</label><select id="t-medico" required><option value="">Seleccionar médico</option><option>Dra. Laura Gómez</option><option>Dr. Carlos Ruiz</option></select></div>
+            <div class="field"><label for="t-desc">Descripción administrativa *</label><textarea id="t-desc" required placeholder="Resumen de ejemplo, no usar como indicación médica"></textarea></div>
+            <div class="field"><label for="t-fecha">Fecha de registro *</label><input id="t-fecha" type="date" required></div>
+          </div>
+          <div class="notice">No uses esta demostración para tomar decisiones clínicas ni registrar datos reales.</div>
+          <div class="actions"><button class="btn" type="submit">Registrar tratamiento (demo)</button><button class="btn secondary" type="reset">Limpiar formulario</button></div>
+        </form>
+      </section>
+
+      <section id="medicos" class="page" hidden>
+        <h1>Registrar médico</h1>
+        <p class="lead">Registra información profesional básica en esta interfaz demostrativa.</p>
+        <form class="panel demo-form">
+          <div class="form-grid">
+            <div class="field"><label for="d-doc">Identificación profesional *</label><input id="d-doc" required placeholder="Documento ficticio"></div>
+            <div class="field"><label for="d-nombre">Nombre completo *</label><input id="d-nombre" required placeholder="Nombre ficticio"></div>
+            <div class="field"><label for="d-especialidad">Especialidad *</label><select id="d-especialidad" required><option value="">Seleccionar especialidad</option><option>Medicina general</option><option>Pediatría</option><option>Medicina interna</option><option>Otra</option></select></div>
+            <div class="field"><label for="d-registro">Registro profesional</label><input id="d-registro" placeholder="Código de ejemplo"></div>
+            <div class="field"><label for="d-correo">Correo profesional</label><input id="d-correo" type="email" placeholder="medico@ejemplo.com"></div>
+          </div>
+          <div class="actions"><button class="btn" type="submit">Registrar médico (demo)</button><button class="btn secondary" type="reset">Limpiar formulario</button></div>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Estado del prototipo</h2>
+        <p>Esta versión permite recorrer las interfaces y probar la validación básica de los campos obligatorios. Los formularios no guardan datos ni se conectan a una base de datos.</p>
+        <p class="hint">Accesibilidad prevista: etiquetas visibles, contraste, navegación por teclado, foco visible y adaptación a pantallas pequeñas. El cumplimiento debe verificarse con pruebas de la versión interactiva.</p>
+      </section>
+    </div>
+    <footer class="footer">Proyecto académico SENA · Análisis y Desarrollo de Software · Datos ficticios</footer>
+  </main>
+</div>
+<script>
+const modules = [
+  {id:"citas", icon:"▦", title:"Registrar citas médicas", desc:"Programación de citas y selección de paciente, médico y consultorio."},
+  {id:"cancelar", icon:"×", title:"Cancelar cita médica", desc:"Identificación y confirmación de solicitudes de cancelación."},
+  {id:"pacientes", icon:"♙", title:"Registrar paciente", desc:"Datos básicos de identificación y contacto."},
+  {id:"consultorios", icon:"⌂", title:"Registrar consultorio", desc:"Código, ubicación y disponibilidad del espacio."},
+  {id:"empleados", icon:"♧", title:"Registrar empleado", desc:"Propuesta académica para datos básicos del personal."},
+  {id:"medicamentos", icon:"✚", title:"Registrar medicamento", desc:"Nombre, presentación y descripción administrativa."},
+  {id:"tratamientos", icon:"☷", title:"Registrar tratamiento", desc:"Datos descriptivos asociados a paciente y profesional."},
+  {id:"medicos", icon:"⚕", title:"Registrar médico", desc:"Identificación profesional y especialidad."}
+];
+const homeCards = document.getElementById("homeCards");
+modules.forEach(m => {
+  const card = document.createElement("article");
+  card.className = "card";
+  const icon = document.createElement("div");
+  icon.className = "card-icon";
+  icon.setAttribute("aria-hidden", "true");
+  icon.textContent = m.icon;
+  const title = document.createElement("h2");
+  title.textContent = m.title;
+  const desc = document.createElement("p");
+  desc.textContent = m.desc;
+  const button = document.createElement("button");
+  button.className = "btn secondary";
+  button.type = "button";
+  button.dataset.go = m.id;
+  button.textContent = "Abrir módulo →";
+  card.append(icon, title, desc, button);
+  homeCards.append(card);
+});
+const pages = [...document.querySelectorAll(".page")];
+const links = [...document.querySelectorAll(".nav-link")];
+const names = {
+  inicio:"Página principal del consultorio",
+  citas:"Registrar citas médicas",
+  cancelar:"Cancelar cita médica",
+  pacientes:"Registrar paciente",
+  consultorios:"Registrar consultorio",
+  empleados:"Registrar empleado",
+  medicamentos:"Registrar medicamento",
+  tratamientos:"Registrar tratamiento",
+  medicos:"Registrar médico"
+};
+function showPage(id, updateHash=true) {
+  if (!names[id]) id = "inicio";
+  pages.forEach(p => p.hidden = p.id !== id);
+  links.forEach(a => {
+    const active = a.dataset.page === id;
+    a.classList.toggle("active", active);
+    if (active) a.setAttribute("aria-current", "page");
+    else a.removeAttribute("aria-current");
+  });
+  document.getElementById("breadcrumb").textContent = "Inicio / " + names[id];
+  if (updateHash && location.hash !== "#" + id) location.hash = id;
+  window.scrollTo(0, 0);
+  document.querySelector("h1")?.focus({preventScroll:true});
+}
+document.addEventListener("click", e => {
+  const target = e.target.closest("[data-go], .nav-link");
+  if (!target) return;
+  const id = target.dataset.go || target.dataset.page;
+  if (id) {
+    e.preventDefault();
+    showPage(id);
+  }
+});
+window.addEventListener("hashchange", () => showPage(location.hash.slice(1) || "inicio", false));
+document.querySelectorAll(".demo-form").forEach(form => {
+  form.addEventListener("submit", e => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+    let message = form.querySelector(".form-result");
+    if (!message) {
+      message = document.createElement("div");
+      message.className = "notice form-result";
+      message.setAttribute("role", "status");
+      form.append(message);
+    }
+    message.textContent = "Validación correcta. Esta es una demostración: no se guardaron datos.";
+    message.focus?.();
+  });
+});
+showPage(location.hash.slice(1) || "inicio", false);
+</script>
+</body>
+</html>
