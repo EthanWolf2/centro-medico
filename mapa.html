@@ -5,151 +5,225 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mapa de navegación - Centro Médico</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
 
     body {
       margin: 0;
-      padding: 30px 16px;
-      font-family: Arial, sans-serif;
+      padding: 28px 18px;
+      font-family: Arial, Helvetica, sans-serif;
       color: #18324b;
       background: #f3f7fc;
     }
 
-    h1, .intro { text-align: center; }
+    h1 {
+      margin-bottom: 8px;
+      text-align: center;
+      color: #174f86;
+    }
 
-    h1 { color: #174f86; }
-
-    .intro {
+    .subtitle {
       margin-bottom: 28px;
+      text-align: center;
       color: #40566c;
     }
 
     .home {
-      width: min(100%, 440px);
-      margin: auto;
+      width: min(100%, 520px);
+      margin: 0 auto;
       padding: 20px;
-      text-align: center;
-      background: #dceafa;
       border: 2px solid #3975b9;
       border-radius: 12px;
+      background: #dceafa;
+      text-align: center;
       font-size: 1.2rem;
       font-weight: bold;
     }
 
-    .down {
+    .home p {
+      margin: 8px 0 0;
+      font-size: 0.9rem;
+      font-weight: normal;
+    }
+
+    .connection-title {
+      margin: 20px 0;
       text-align: center;
-      color: #3975b9;
-      font-size: 30px;
-      padding: 8px;
+      font-weight: bold;
+      color: #174f86;
     }
 
     .modules {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 16px;
-      max-width: 900px;
-      margin: auto;
+      max-width: 960px;
+      margin: 0 auto;
     }
 
     .module {
-      background: white;
-      border: 1px solid #b9cde2;
+      padding: 18px 14px;
+      border: 1px solid #a9bfd7;
       border-radius: 10px;
-      padding: 18px 12px;
+      background: #fff;
       text-align: center;
-      box-shadow: 0 2px 5px #18324b12;
     }
 
     .module h2 {
-      font-size: 1rem;
       margin: 0 0 12px;
+      font-size: 1rem;
+      line-height: 1.4;
     }
 
-    .module a {
-      display: inline-block;
-      color: #174f86;
+    .arrow {
+      margin: 5px 0;
+      color: #245f9e;
+      font-size: 1.8rem;
       font-weight: bold;
-      text-decoration: underline;
-      padding: 8px;
     }
 
-    .module a:focus-visible {
-      outline: 3px solid #c65d00;
-      outline-offset: 3px;
+    .route {
+      margin: 4px 0;
+      color: #334e68;
+      font-size: 0.9rem;
     }
 
-    .note {
+    .legend {
       max-width: 760px;
       margin: 28px auto 0;
+      padding: 16px;
+      border: 1px solid #c6d5e5;
+      border-radius: 10px;
+      background: #fff;
       line-height: 1.6;
-      text-align: center;
     }
 
-    @media (max-width: 520px) {
-      .modules { grid-template-columns: 1fr; }
+    .legend h2 {
+      margin-top: 0;
+      font-size: 1rem;
+      color: #174f86;
+    }
+
+    @media (max-width: 540px) {
+      .modules {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media print {
-      body { background: white; padding: 10px; }
-      .module { box-shadow: none; break-inside: avoid; }
+      body {
+        padding: 10px;
+        background: white;
+      }
+
+      .module,
+      .legend {
+        break-inside: avoid;
+      }
     }
   </style>
 </head>
+
 <body>
   <h1>Mapa de navegación</h1>
-  <p class="intro">Sistema de Información para un Centro Médico</p>
-
-  <div class="home">Página principal del consultorio</div>
-  <div class="down" aria-hidden="true">↓</div>
-
-  <div class="modules">
-    <section class="module">
-      <h2>Registrar citas médicas</h2>
-      <a href="index.html">Volver a Inicio ↑</a>
-    </section>
-
-    <section class="module">
-      <h2>Cancelar cita médica</h2>
-      <a href="index.html">Volver a Inicio ↑</a>
-    </section>
-
-    <section class="module">
-      <h2>Registrar paciente</h2>
-      <a href="index.html">Volver a Inicio ↑</a>
-    </section>
-
-    <section class="module">
-      <h2>Registrar consultorio</h2>
-      <a href="index.html">Volver a Inicio ↑</a>
-    </section>
-
-    <section class="module">
-      <h2>Registrar empleado</h2>
-      <a href="index.html">Volver a Inicio ↑</a>
-    </section>
-
-    <section class="module">
-      <h2>Registrar medicamento</h2>
-      <a href="index.html">Volver a Inicio ↑</a>
-    </section>
-
-    <section class="module">
-      <h2>Registrar tratamiento</h2>
-      <a href="index.html">Volver a Inicio ↑</a>
-    </section>
-
-    <section class="module">
-      <h2>Registrar médico</h2>
-      <a href="index.html">Volver a Inicio ↑</a>
-    </section>
-  </div>
-
-  <p class="note">
-    Cada módulo se representa como una pantalla de trabajo
-    accesible desde la página principal. Desde cada pantalla
-    se contempla el retorno a Inicio.
-    Este mapa representa la estructura de navegación propuesta.
+  <p class="subtitle">
+    Sistema de Información para un Centro Médico
   </p>
+
+  <main>
+    <section class="home">
+      1. Página principal del consultorio
+      <p>Punto de entrada y navegación principal del sistema</p>
+    </section>
+
+    <p class="connection-title">
+      Acceso desde Inicio y retorno desde cada módulo
+    </p>
+
+    <section class="modules" aria-label="Ocho módulos conectados con Inicio">
+
+      <article class="module">
+        <h2>2. Registrar citas médicas</h2>
+        <p class="route">Inicio → Registrar citas médicas</p>
+        <div class="arrow" aria-hidden="true">↓</div>
+        <p class="route">Registrar citas médicas → Inicio</p>
+        <div class="arrow" aria-hidden="true">↑</div>
+      </article>
+
+      <article class="module">
+        <h2>3. Cancelar cita médica</h2>
+        <p class="route">Inicio → Cancelar cita médica</p>
+        <div class="arrow" aria-hidden="true">↓</div>
+        <p class="route">Cancelar cita médica → Inicio</p>
+        <div class="arrow" aria-hidden="true">↑</div>
+      </article>
+
+      <article class="module">
+        <h2>4. Registrar paciente</h2>
+        <p class="route">Inicio → Registrar paciente</p>
+        <div class="arrow" aria-hidden="true">↓</div>
+        <p class="route">Registrar paciente → Inicio</p>
+        <div class="arrow" aria-hidden="true">↑</div>
+      </article>
+
+      <article class="module">
+        <h2>5. Registrar consultorio</h2>
+        <p class="route">Inicio → Registrar consultorio</p>
+        <div class="arrow" aria-hidden="true">↓</div>
+        <p class="route">Registrar consultorio → Inicio</p>
+        <div class="arrow" aria-hidden="true">↑</div>
+      </article>
+
+      <article class="module">
+        <h2>6. Registrar empleado</h2>
+        <p class="route">Inicio → Registrar empleado</p>
+        <div class="arrow" aria-hidden="true">↓</div>
+        <p class="route">Registrar empleado → Inicio</p>
+        <div class="arrow" aria-hidden="true">↑</div>
+      </article>
+
+      <article class="module">
+        <h2>7. Registrar medicamento</h2>
+        <p class="route">Inicio → Registrar medicamento</p>
+        <div class="arrow" aria-hidden="true">↓</div>
+        <p class="route">Registrar medicamento → Inicio</p>
+        <div class="arrow" aria-hidden="true">↑</div>
+      </article>
+
+      <article class="module">
+        <h2>8. Registrar tratamiento</h2>
+        <p class="route">Inicio → Registrar tratamiento</p>
+        <div class="arrow" aria-hidden="true">↓</div>
+        <p class="route">Registrar tratamiento → Inicio</p>
+        <div class="arrow" aria-hidden="true">↑</div>
+      </article>
+
+      <article class="module">
+        <h2>9. Registrar médico</h2>
+        <p class="route">Inicio → Registrar médico</p>
+        <div class="arrow" aria-hidden="true">↓</div>
+        <p class="route">Registrar médico → Inicio</p>
+        <div class="arrow" aria-hidden="true">↑</div>
+      </article>
+
+    </section>
+
+    <section class="legend">
+      <h2>Descripción de las conexiones</h2>
+      <p>
+        La página principal del consultorio permite acceder a los ocho
+        módulos de trabajo. Desde cada módulo se contempla una ruta de
+        retorno a Inicio para facilitar la orientación y la navegación.
+      </p>
+      <p>
+        <strong>Nota:</strong> Registrar empleado se conserva como propuesta
+        de interfaz de la evidencia anterior. El mapa representa la estructura
+        de navegación prevista y no implica almacenamiento real de datos.
+      </p>
+    </section>
+  </main>
 </body>
 </html>
